@@ -118,11 +118,28 @@ acc_metric.compute()
 
 f1_metric.compute()
 
-!pip install weasel
+!pip install /content/weasel-main.zip
 
+!pip install torchmetrics==0.11.4 -qqq
 
+from weasel.models.downstream_models.transformers import Transformers
 
+# instantiate our transformers end model
+end_model = model
 
+from weasel.models import Weasel
+
+# instantiate our weasel end-to-end model
+weasel = Weasel(
+    end_model=end_model,
+    num_LFs=len(weak_labels.rules),
+    n_classes=2,
+    encoder={"hidden_dims": [32, 10]},
+    optim_encoder={"name": "adam", "lr": 1e-4},
+    optim_end_model={"name": "adam", "lr": 5e-5},
+)
+
+#https://docs.argilla.io/en/v1.1.0/guides/techniques/weak_supervision.html
 
 
 
